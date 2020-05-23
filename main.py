@@ -45,18 +45,19 @@ def parse_graph_from_json(json_graph):
                 edge['node2_policy'] is not None:
             graph.add_edge(edge['node1_pub'],
                            edge['node2_pub'],
-                           capacity=edge['capacity'],
-                           last_update=edge['last_update'],
+                           capacity=int(edge['capacity']),
+                           #weight=10000.0/float(edge['capacity']),
+                           last_update=int(edge['last_update']),
                            channel_id=edge['channel_id'],
                            chan_point=edge['chan_point'],
-                           node1_timelock_delta=edge['node1_policy']['time_lock_delta'],
-                           node1_min_htlc=edge['node1_policy']['min_htlc'],
-                           node1_fee_base_msat=edge['node1_policy']['fee_base_msat'],
-                           node1_fee_rate_milli_msat=edge['node1_policy']['fee_rate_milli_msat'],
-                           node2_timelock_delta=edge['node2_policy']['time_lock_delta'],
-                           node2_min_htlc=edge['node2_policy']['min_htlc'],
-                           node2_fee_base_msat=edge['node2_policy']['fee_base_msat'],
-                           node2_fee_rate_milli_msat=edge['node2_policy']['fee_rate_milli_msat']
+                           node1_timelock_delta=int(edge['node1_policy']['time_lock_delta']),
+                           node1_min_htlc=int(edge['node1_policy']['min_htlc']),
+                           node1_fee_base_msat=int(edge['node1_policy']['fee_base_msat']),
+                           node1_fee_rate_milli_msat=int(edge['node1_policy']['fee_rate_milli_msat']),
+                           node2_timelock_delta=int(edge['node2_policy']['time_lock_delta']),
+                           node2_min_htlc=int(edge['node2_policy']['min_htlc']),
+                           node2_fee_base_msat=int(edge['node2_policy']['fee_base_msat']),
+                           node2_fee_rate_milli_msat=int(edge['node2_policy']['fee_rate_milli_msat'])
                            )
     return graph
 
@@ -90,9 +91,7 @@ def main():
     args = parser.parse_args()
     print(args)
     json_graph = json.load(args.filepath)
-
     graph = parse_graph_from_json(json_graph)
-
     if args.isolated is True:
         clean_isolated_nodes(graph)
     if args.connected is True:
